@@ -1,165 +1,165 @@
 # StarrX #
 
-## It is just an esolang! ##
+**It is just an esolang!**
 
+[中文](./README_CN.md)
 
+## Some Simple Demos ##
 
-### 一些简单的样例： ###
+### Hello, world! ###
 
+#### Code ####
 
-#### Hello, world! ####
-代码：
 ```
    * "Hello, world! " .
 ```
 
-输出：`Hello, world!`
+#### Output ###
 
+```
+Hello, world!
+```
 
-#### 输出0到99的值 ####
+### Output from 0 to 99 ###
+
+#### Code ####
+
 ```
    * 100   * 0   * 1 ' * * *  * .  + *  *   +     * ^
 ```
 
-输出：`0
-      1
-      2
-      ...
-      98
-      99`
+#### Output ####
 
+```
+0
+1
+2
+...
+98
+99
+```
 
-#### 斐波那契数列 ####
+### Fibonacci Sequence ###
+
+#### Code ####
+
 ```
  ,   * 1   * 0 ' * * *  * .     *  * *  +  * *      * *  *    * * *   * 1  *  *   +     * * * *  *      * ^
 ```
 
-输入：`10`
+#### Input ####
 
-输出：`1
-      1
-      2
-      ...
-      21
-      34
-      55`
+```
+10
+```
 
+#### Output ####
 
+```
+1
+1
+2
+...
+21
+34
+55
+```
 
----
+## Grammar ##
 
+### Agreement ###
 
+* Use `pointer` to determine the element's `insert`, `swap`, `copy` and `delete`.
+* `pointer` will move with the operation of the element.
+* The number of spaces before each symbol cannot be 0.
+* There must be at least 1 space before any number.
+* Of course, this is not necessary in strings, and extra spaces will be preserved.
+* Usage of the interpreter: `StarrX.py <file>`
 
-### 基础： ###
+### Usage of Symbols ###
 
-- 使用`指针`来确定元素的`插入`、`交换`、`复制`和`删除`等。
-- `指针`会随着对元素的操作而移动。
-- 每个符号前的空格数均不能为0。
-- 数字前也都至少要有1个空格。
-- 当然，字符串里是不用这样的，多出来的空格将会被保留。
-- 解释器的使用：`StarrX.py <file>`
+#### Symbol **\*** ####
 
+This symbol is used to manipulate the `pointer` and some related elements read and write.
 
-#### `*` 符号： ####
+|Opcode 1|Opcode 2|Meaning|
+|:-:|:-:|:--|
+|3|/|`insert` element, the following should be `integer`, `float` or `string`.|
+|4|/|Swap the element which pointed by `pointer` with the element which at `tail`.|
+|5|/|Copy the element which pointed by `pointer` to `tail`.|
+|6|/|`delete` the element pointed by the pointer.|
+|1|1|Move `pointer` to `tail`.|
+|2|1|Move `pointer` towards `tail` for one bit.|
+|1|2|Move `pointer` towards `head` for one bit.|
+|2|2|Move `pointer` to `head`.|
 
-该符号用于操作`指针`以及一些相关的元素读写。
+#### Symbol **+** ####
 
-Opcode 1 | Opcode 2 | Meaning
-:------: | :------: | -------
-3|/| `插入`元素，后面的内容应该是`整型`、`浮点型`或`字符串`。
-4|/| 将`指针`所指元素与`末尾`的元素`交换`。
-5|/| 将`指针`所指元素`复制`至`末尾`。
-6|/| `删除`指针所指元素。
-1|1| 移动`指针`至`末尾`。
-2|1| 将`指针`后移一位。
-1|2| 将`指针`前移一位。
-2|2| 移动`指针`至`头部`。
+This symbol is used for arithmetic operations and rounding.
 
+The element pointed to by `pointer` will be used as the first parameter, and the element at `tail` will be used as the second parameter (if needed).
 
-#### `+` 符号： ####
+Note that the result of the operation will be stored to the location where the first parameter is located (i.e. : the element pointed by `pointer`).
 
-该符号用于进行算数运算和取整。
+|Opcode 1|Opcode 2|Meaning|
+|:-:|:-:|:--|
+|2|/|addition (+)|
+|3|/|subtraction (-)|
+|4|/|multiplication (\*)|
+|5|/|division (/)|
+|6|/|mod (%)|
+|7|/|power (^)|
+|1|1|round-down (floor)|
+|1|2|round|
+|1|3|round-up (ceil)|
 
-`指针`所指元素将会被作为第一个参数，而`末尾`的元素会被作为第二个参数（如果需要）。
+#### Symbol **-** ####
 
-请注意，算数运算是就地执行的，运算结果将会被存至第一个参数所在的位置（即：`指针`所指元素处）。
+This symbol is used for relational operations.
 
-Opcode 1 | Opcode 2 | Meaning
-:------: | :------: | -------
-2|/| `加法`运算（+）
-3|/| `减法`运算（-）
-4|/| `乘法`运算（*）
-5|/| `除法`运算（/）
-6|/| `取余`运算（%）
-7|/| `乘方`运算（^）
-1|1| `向下取整`运算（floor）
-1|2| `四舍五入`运算（round）
-1|3| `向上取整`运算（ceil）
+The element pointed to by `pointer` will be used as the first parameter, and the element at `tail` will be used as the second parameter.
 
+The result of the operation is 0 or 1, and it will be stored to `tail`.
 
-#### `-` 符号： ####
+|Opcode 1|Opcode 2|Meaning|
+|:-:|:-:|:--|
+|1|2|Less than (<)|
+|1|3|Less than or equal to (<=)|
+|2|1|Larger than (>)|
+|3|1|Larger than or equal to (>=)|
+|1|1|Equal (==)|
+|2|2|Non-equal (!=)|
 
-该符号用于进行关系运算。
+#### Symbol **"** ####
 
-`指针`所指元素将会被作为第一个参数，而`末尾`的元素会被作为第二个参数。
+This symbol is used to represent a string. Appears after the "`insert` element" operation.
 
-运算结果将为0或1，并且会被存至`末尾`。
+This symbol appears with N (N>0) spaces to indicate the beginning of the string. Use the same N spaces and a `"` symbol to ending a string.
 
-Opcode 1 | Opcode 2 | Meaning
-:------: | :------: | -------
-1|2| 小于（<）
-1|3| 小于等于（<=）
-2|1| 大于（>）
-3|1| 大于等于（>=）
-1|1| 等于（==）
-2|2| 不等于（!=）
+#### Symbol **,** ####
 
+This symbol is used to write the input to the location pointed by `pointer`.
 
+|Opcode|Meaning|
+|:-:|:--|
+|1|Line feed after output.|
+|2|Output without line feed.|
 
-#### `"` 符号： ####
+#### Symbol **'** ####
 
-该符号用于表示字符串。出现在“`插入`元素”操作的后面。
+This symbol appears with N (N>0) spaces, used to create `tag N`.
 
-该符号出现时伴随有n(n>0)个空格以表示字符串的开始。通过相同n个空格接上`"`符号来结束一个字符串。
+#### Symbol **^** ####
 
+This symbol appears with N (N>0) spaces.
 
-#### `,` 符号： ####
+The element at `tail` will be popped up and judged: if it is not 0, then `jump` to `tag N`.
 
-该符号用于将`STDIN`的输入写入指针所指向的位置。
+It should be noted that `tag N` must be defined before `jump`. Also, newly defined `tag` with the same N value will overwrite the old `tag`.
 
-Opcode | Meaning
-:----: | -------
-1| 将输入作为`整型`数据。
-2| 将输入作为`浮点型`数据。
-3| 将输入作为`字符串`数据。
+#### Symbol **\`** ####
 
+This symbol is used to `undo` the movement of  `pointer`.
 
-#### `.` 符号： ####
+Since `undo` is also a pointer movement, it is meaningless to `undo` all the time.
 
-该符号用于将指针所指元素输出至`STDOUT`。
-
-Opcode | Meaning
-:----: | -------
-1| 输出后换行。
-2| 输出但不换行。
-
-
-#### `'` 符号： ####
-
-该符号伴随n(n>0)个空格出现，用于创建一个为n的`标记`。
-
-
-#### `^` 符号： ####
-
-该符号伴随n(n>0)个空格出现。
-
-弹出（注意是弹出）`末尾`的元素并进行判断：如果`末尾`的元素非0，则跳转至`标记`n。
-
-需要注意的是，必须在跳转之前定义`标记`。并且，新定义的，n值相同的标签将会互相覆盖。
-
-
-#### **`** 符号： ####
-
-该符号用于撤销指针移动。
-
-由于撤销也算是指针移动，所以一直撤销是无意义的，只会反复横跳。
