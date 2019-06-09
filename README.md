@@ -1,6 +1,6 @@
 # StarrX #
 
-**It is just an esolang!**
+**It is just an esolang! Let's writing the code that just like starry sky!**
 
 [中文](./README_CN.md)
 
